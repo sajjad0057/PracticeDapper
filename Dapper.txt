@@ -1,0 +1,11 @@
+               Dapper                                        Emtity Framework
+=============================================+================================================
+1. Micro ORM                                   1. ORM
+2. Preferred by companies with DBA's           2. Preferred by developer who love to code and
+  (Database administrator) or developer who      worry writing SQL.
+   writing their SQL.
+3. Faster than EF Core.                        3. Slower than Dapper.
+4. Performance is priority.                    4. Productivity in priority.
+5. Development time is longer.                 5. Faster Development than dapper.
+6. Easier Learning Curve.                      6. Dificult Learning Curve.
+7. Stored Procedure and Views friendly         7. Stored Procedure and Views are not that simple              
