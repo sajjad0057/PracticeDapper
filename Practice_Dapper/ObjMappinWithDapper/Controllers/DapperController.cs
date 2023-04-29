@@ -14,11 +14,12 @@ public class DapperController : ControllerBase
     public DapperController(IConfiguration configuration) => 
         _CONNECTION_STRING = configuration?.GetConnectionString("DefaultConnection");
 
-    [HttpGet("")]
-    public async Task<IActionResult> Index([FromQuery]bool getSajjad)
+    [HttpGet]
+    public async Task<IActionResult> Get([FromQuery]bool getSajjad)
     {
-        var sql = new StringBuilder(@"SELECT 
-	           [Title]
+        var sql = new StringBuilder(@"SELECT
+               [Id]
+	          ,[Title]
               ,[FirstName]
               ,[LastName]
               ,[Gender]
@@ -34,9 +35,15 @@ public class DapperController : ControllerBase
 
         using (var connection = new SqlConnection(_CONNECTION_STRING))
         {
-            var persons = await connection.QueryAsync<Person>(sql.ToString(), new { firstName = "Sajjad"});
+            var persons = await connection.QueryAsync<Person>(sql.ToString(), dynamicParameters);
 
             return Ok(persons);
         }
     }
+
+    //[HttpPost]
+    //public async Task<IActionResult> Post([FromBody]Person person)
+    //{
+
+    //}
 }
