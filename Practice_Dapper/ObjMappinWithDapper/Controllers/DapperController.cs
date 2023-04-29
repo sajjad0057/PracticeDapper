@@ -21,11 +21,12 @@ public class DapperController : ControllerBase
               ,[FirstName]
               ,[LastName]
               ,[Gender]
-              FROM [Practice_Dapper1].[dbo].[Person]";
+              FROM [Practice_Dapper1].[dbo].[Person]
+              WHERE FirstName = @firstName";
 
         using (var connection = new SqlConnection(_CONNECTION_STRING))
         {
-            var persons = await connection.QueryAsync<Person>(sql);
+            var persons = await connection.QueryAsync<Person>(sql, new { firstName = "Sajjad"});
 
             return Ok(persons);
         }
