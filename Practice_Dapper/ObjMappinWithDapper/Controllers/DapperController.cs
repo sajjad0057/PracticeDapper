@@ -41,9 +41,36 @@ public class DapperController : ControllerBase
         }
     }
 
-    //[HttpPost]
-    //public async Task<IActionResult> Post([FromBody]Person person)
-    //{
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] Person person)
+    {
+        var sql = new StringBuilder(@"INSERT INTO [dbo].[Person] (
+                                             [Title], [FirstName], [LastName], [Gender])  VALUES (
+                                              @Title, @FirstName, @LastName, @Gender)");
 
-    //}
+        if (person is not null)
+        {
+            var dynamicParameters = new DynamicParameters();
+
+            foreach (var item in person.GetType().GetProperties())
+            {
+                //Console.WriteLine($"{item.Name} , {item.GetValue(person)}");
+                dynamicParameters.Add($"{item.Name}", $"{item.GetValue(person)}");
+            }
+
+            using (var connection = new SqlConnection(_CONNECTION_STRING))
+            {
+                var result = await connection.ExecuteAsync(sql.ToString(), dynamicParameters);
+
+                if (result > 0)
+                    return Ok($"{result} row is affected");
+                else
+                    return BadRequest("There have a problem occured in inserting new row");
+            }
+        }
+        else
+        {
+            return BadRequest("Person can't be null!");
+        }
+    }
 }
