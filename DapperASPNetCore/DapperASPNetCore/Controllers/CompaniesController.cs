@@ -130,5 +130,25 @@ namespace DapperASPNetCore.Controllers
                 return Problem(ex.Message);
             }
         }
+
+        [HttpGet("{id}/MultipleResult")]
+        public async Task<IActionResult> GetMultipleResults(int id)
+        {
+            try
+            {
+                var company = await _companyRespository.GetMultipleResults(id);
+
+                if(company is null)
+                    return NotFound();
+
+                return Ok(company);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.StackTrace);
+
+                return Problem(ex.Message);
+            }
+        }
     }
 }

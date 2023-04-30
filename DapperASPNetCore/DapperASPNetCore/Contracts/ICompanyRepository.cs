@@ -11,4 +11,6 @@ public interface ICompanyRepository
     public Task UpdateCompany (int id, CompanyUpdateDto company);
     public Task DeleteCompany (int id);
     public Task<Company> GetCompanyByEmployeeId(int id);
+    public Task<Company> GetMultipleResults(int id);
+    public Task<IList<Company>> MultipleMapping();
 }

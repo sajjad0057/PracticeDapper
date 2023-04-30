@@ -110,4 +110,50 @@ public class CompanyRepository : ICompanyRepository
             return company;
         }
     }
+
+    public async Task<Company> GetMultipleResults(int id)
+    {
+        var query = "SELECT * FROM Companies WHERE Id = @Id;" +
+            "SELECT * FROM Employees WHERE CompanyId = @Id;";
+
+        using (var connection = _context.CreateConnection())
+        using (var multi = await connection.QueryMultipleAsync(query, new { id }))
+        {
+            var company = await multi.ReadSingleOrDefaultAsync<Company>();
+
+            if(company is not null)
+            {
+                company.Employees = (await multi.ReadAsync<Employee>()).ToList();
+            }
+
+            return company?? new Company();
+        }
+    }
+
+    public async Task<IList<Company>> MultipleMapping()
+    {
+        var query = "SELECT * FROM Companies c join Employees e ON c.Id = e.CompanyId;";
+
+        using (var connection = _context.CreateConnection())
+        {
+            var companyDict = new Dictionary<int, Company>();
+
+            var companies = await connection.QueryAsync<Company, Employee, Company>(
+                    query, (company, employee) =>
+                    {
+                        if(!companyDict.TryGetValue(company.Id, out var currentCompany))
+                        {
+                            currentCompany = company;
+                            companyDict.Add(company.Id, currentCompany);
+                        }
+
+                        currentCompany.Employees.Add(employee);
+
+                        return currentCompany;
+                    }
+                );
+
+            return companyDict.Values.ToList();
+        }
+    }
 }
