@@ -13,4 +13,5 @@ public interface ICompanyRepository
     public Task<Company> GetCompanyByEmployeeId(int id);
     public Task<Company> GetMultipleResults(int id);
     public Task<IList<Company>> MultipleMapping();
+    public Task CreateMultipleCompanies(List<CompanyCreationDto> companies);
 }

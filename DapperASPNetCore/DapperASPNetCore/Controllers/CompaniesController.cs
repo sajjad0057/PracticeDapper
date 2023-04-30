@@ -170,5 +170,21 @@ namespace DapperASPNetCore.Controllers
                 return Problem(ex.Message);
             }
         }
+
+        [HttpPost("multiple")]
+        public async Task<IActionResult> CreateCompanies(List<CompanyCreationDto> companies)
+        {
+            try
+            {
+                await _companyRespository.CreateMultipleCompanies(companies);
+                return StatusCode(201);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.StackTrace);
+
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }
