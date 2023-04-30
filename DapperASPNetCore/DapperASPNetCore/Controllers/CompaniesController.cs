@@ -150,5 +150,25 @@ namespace DapperASPNetCore.Controllers
                 return Problem(ex.Message);
             }
         }
+
+        [HttpGet("MultipleMapping")]
+        public async Task<IActionResult> GetMultipleMapping()
+        {
+            try
+            {
+                var companies = await _companyRespository.MultipleMapping();
+
+                if (companies is null)
+                    return NotFound();
+
+                return Ok(companies);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.StackTrace);
+
+                return Problem(ex.Message);
+            }
+        }
     }
 }
