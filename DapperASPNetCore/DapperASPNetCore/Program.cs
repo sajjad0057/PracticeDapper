@@ -1,4 +1,6 @@
 using DapperASPNetCore.Context;
+using DapperASPNetCore.Contracts;
+using DapperASPNetCore.Repositories;
 using log4net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<DapperContext>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 
 
 var log = LogManager.GetLogger(typeof(Program));
