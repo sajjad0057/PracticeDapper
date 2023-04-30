@@ -110,5 +110,25 @@ namespace DapperASPNetCore.Controllers
                 return Problem(ex.Message);
             }
         }
+
+        [HttpGet("ByEmployeeId/{id}")]
+        public async Task<IActionResult> getCompanyForEmployee(int id)
+        {
+            try
+            {
+                var company = await _companyRespository.GetCompanyByEmployeeId(id);
+
+                if (company is null)
+                    return NotFound();
+
+                return Ok(company);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.StackTrace);
+
+                return Problem(ex.Message);
+            }
+        }
     }
 }

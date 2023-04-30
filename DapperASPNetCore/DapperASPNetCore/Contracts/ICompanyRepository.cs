@@ -10,4 +10,5 @@ public interface ICompanyRepository
     public Task<Company> CreateCompany(CompanyCreationDto company);
     public Task UpdateCompany (int id, CompanyUpdateDto company);
     public Task DeleteCompany (int id);
+    public Task<Company> GetCompanyByEmployeeId(int id);
 }
